@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Model;
+namespace ZQuintana\LaraSwag\Model;
 
 use Symfony\Component\PropertyInfo\Type;
 

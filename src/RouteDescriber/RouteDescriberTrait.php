@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\RouteDescriber;
+namespace ZQuintana\LaraSwag\RouteDescriber;
 
 use EXSyst\Component\Swagger\Operation;
 use EXSyst\Component\Swagger\Swagger;
@@ -27,8 +27,10 @@ trait RouteDescriberTrait
      */
     private function getOperations(Swagger $api, Route $route): array
     {
-        $path = $api->getPaths()->get($this->normalizePath($route->getPath()));
-        $methods = $route->getMethods() ?: Swagger::$METHODS;
+        $path       = $api->getPaths()->get($this->normalizePath($route->getPath()));
+        $methods    = $route->getMethods() ?: Swagger::$METHODS;
+        $operations = [];
+
         foreach ($methods as $method) {
             $method = strtolower($method);
             if (!in_array($method, Swagger::$METHODS)) {
@@ -41,6 +43,11 @@ trait RouteDescriberTrait
         return $operations;
     }
 
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
     private function normalizePath(string $path): string
     {
         if (substr($path, -10) === '.{_format}') {

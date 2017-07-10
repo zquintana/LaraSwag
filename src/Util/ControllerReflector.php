@@ -9,25 +9,34 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Util;
+namespace ZQuintana\LaraSwag\Util;
 
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Illuminate\Contracts\Container\Container;
 
 /**
  * @internal
  */
 final class ControllerReflector
 {
+    /**
+     * @var Container
+     */
     private $container;
-    private $controllerNameParser;
 
+    /**
+     * @var array
+     */
     private $controllers = [];
 
-    public function __construct(ContainerInterface $container, ControllerNameParser $controllerNameParser)
+
+    /**
+     * ControllerReflector constructor.
+     *
+     * @param Container $container
+     */
+    public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->controllerNameParser = $controllerNameParser;
     }
 
     /**
@@ -41,7 +50,7 @@ final class ControllerReflector
     {
         $callable = $this->getClassAndMethod($controller);
         if (null === $callable) {
-            return;
+            return null;
         }
 
         list($class, $method) = $callable;
@@ -51,13 +60,20 @@ final class ControllerReflector
             // In case we can't reflect the controller, we just
             // ignore the route
         }
+
+        return null;
     }
 
+    /**
+     * @param string $controller
+     *
+     * @return array|null
+     */
     public function getReflectionClassAndMethod(string $controller)
     {
         $callable = $this->getClassAndMethod($controller);
         if (null === $callable) {
-            return;
+            return null;
         }
 
         list($class, $method) = $callable;
@@ -67,16 +83,19 @@ final class ControllerReflector
             // In case we can't reflect the controller, we just
             // ignore the route
         }
+
+        return null;
     }
 
+    /**
+     * @param string $controller
+     *
+     * @return array|mixed|null
+     */
     private function getClassAndMethod(string $controller)
     {
         if (isset($this->controllers[$controller])) {
             return $this->controllers[$controller];
-        }
-
-        if (false === strpos($controller, '::') && 2 === substr_count($controller, ':')) {
-            $controller = $this->controllerNameParser->parse($controller);
         }
 
         if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
@@ -91,11 +110,8 @@ final class ControllerReflector
                 $method = $matches[2];
             }
 
-            if ($this->container->has($controller)) {
-                $class = get_class($this->container->get($controller));
-                if (class_exists(ClassUtils::class)) {
-                    $class = ClassUtils::getRealClass($class);
-                }
+            if ($this->container->bound($controller)) {
+                $class = get_class($this->container->make($controller));
 
                 if (!isset($method) && method_exists($class, '__invoke')) {
                     $method = '__invoke';
@@ -106,7 +122,7 @@ final class ControllerReflector
         if (!isset($class) || !isset($method)) {
             $this->controllers[$controller] = null;
 
-            return;
+            return null;
         }
 
         return $this->controllers[$controller] = [$class, $method];

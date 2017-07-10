@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SwaggerPhp;
+namespace ZQuintana\LaraSwag\SwaggerPhp;
 
 use Swagger\Analysis;
 use Swagger\Annotations\Info;
@@ -23,6 +23,9 @@ use Swagger\Context;
  */
 final class AddDefaults
 {
+    /**
+     * @param Analysis $analysis
+     */
     public function __invoke(Analysis $analysis)
     {
         if ($analysis->getAnnotationsOfType(Info::class)) {

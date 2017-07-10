@@ -9,20 +9,37 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Routing;
+namespace ZQuintana\LaraSwag\Routing;
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * Class FilteredRouteCollectionBuilder
+ */
 final class FilteredRouteCollectionBuilder
 {
+    /**
+     * @var array
+     */
     private $pathPatterns;
 
+
+    /**
+     * FilteredRouteCollectionBuilder constructor.
+     *
+     * @param array $pathPatterns
+     */
     public function __construct(array $pathPatterns = [])
     {
         $this->pathPatterns = $pathPatterns;
     }
 
+    /**
+     * @param RouteCollection $routes
+     *
+     * @return RouteCollection
+     */
     public function filter(RouteCollection $routes): RouteCollection
     {
         $filteredRoutes = new RouteCollection();
@@ -35,6 +52,10 @@ final class FilteredRouteCollectionBuilder
         return $filteredRoutes;
     }
 
+    /**
+     * @param Route $route
+     * @return bool
+     */
     private function match(Route $route): bool
     {
         foreach ($this->pathPatterns as $pathPattern) {

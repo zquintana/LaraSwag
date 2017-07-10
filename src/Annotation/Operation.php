@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Annotation;
+namespace ZQuintana\LaraSwag\Annotation;
 
 use Swagger\Annotations\Operation as BaseOperation;
 

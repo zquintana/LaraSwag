@@ -9,14 +9,26 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\ModelDescriber;
+namespace ZQuintana\LaraSwag\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Model\Model;
+use ZQuintana\LaraSwag\Model\Model;
 
+/**
+ * Interface ModelDescriberInterface
+ */
 interface ModelDescriberInterface
 {
+    /**
+     * @param Model  $model
+     * @param Schema $schema
+     * @return mixed
+     */
     public function describe(Model $model, Schema $schema);
 
+    /**
+     * @param Model $model
+     * @return bool
+     */
     public function supports(Model $model): bool;
 }

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\ModelDescriber;
+namespace ZQuintana\LaraSwag\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Model\Model;
+use ZQuintana\LaraSwag\Describer\ModelRegistryAwareInterface;
+use ZQuintana\LaraSwag\Describer\ModelRegistryAwareTrait;
+use ZQuintana\LaraSwag\Model\Model;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormTypeInterface;
 

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Routing;
+namespace ZQuintana\LaraSwag\Tests\Routing;
 
-use Nelmio\ApiDocBundle\Routing\FilteredRouteCollectionBuilder;
+use ZQuintana\LaraSwag\Routing\FilteredRouteCollectionBuilder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;

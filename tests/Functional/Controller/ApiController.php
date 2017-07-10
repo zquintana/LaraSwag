@@ -9,15 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Controller;
+namespace ZQuintana\LaraSwag\Tests\Functional\Controller;
 
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\Article;
-use Nelmio\ApiDocBundle\Tests\Functional\Entity\User;
-use Nelmio\ApiDocBundle\Tests\Functional\Form\DummyType;
+use ZQuintana\LaraSwag\Annotation\Model;
+use ZQuintana\LaraSwag\Annotation\Operation;
+use ZQuintana\LaraSwag\Tests\Functional\Entity\Article;
+use ZQuintana\LaraSwag\Tests\Functional\Entity\User;
+use ZQuintana\LaraSwag\Tests\Functional\Form\DummyType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Swagger\Annotations as SWG;
 
@@ -78,15 +76,6 @@ class ApiController
      * )
      */
     public function userAction()
-    {
-    }
-
-    /**
-     * @Route("/fosrest.{_format}", methods={"POST"})
-     * @QueryParam(name="foo")
-     * @RequestParam(name="bar")
-     */
-    public function fosrestAction()
     {
     }
 

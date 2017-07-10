@@ -9,15 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\RouteDescriber;
+namespace ZQuintana\LaraSwag\RouteDescriber;
 
 use EXSyst\Component\Swagger\Swagger;
 use Symfony\Component\Routing\Route;
 
+/**
+ * Class RouteMetadataDescriber
+ */
 final class RouteMetadataDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
+    /**
+     * {@inheritdoc}
+     */
     public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {

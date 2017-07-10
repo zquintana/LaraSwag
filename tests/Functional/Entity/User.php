@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
+namespace ZQuintana\LaraSwag\Tests\Functional\Entity;
 
 /**
  * @author Guilhem N. <egetick@gmail.com>

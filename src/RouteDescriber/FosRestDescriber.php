@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\RouteDescriber;
+namespace ZQuintana\LaraSwag\RouteDescriber;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Swagger;
@@ -19,6 +19,9 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
 
+/**
+ * Class FosRestDescriber
+ */
 final class FosRestDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;

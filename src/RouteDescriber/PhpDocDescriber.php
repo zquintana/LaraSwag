@@ -9,19 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\RouteDescriber;
+namespace ZQuintana\LaraSwag\RouteDescriber;
 
 use EXSyst\Component\Swagger\Swagger;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Symfony\Component\Routing\Route;
 
+/**
+ * Class PhpDocDescriber
+ */
 final class PhpDocDescriber implements RouteDescriberInterface
 {
     use RouteDescriberTrait;
 
+    /**
+     * @var DocBlockFactory|DocBlockFactoryInterface
+     */
     private $docBlockFactory;
 
+    /**
+     * PhpDocDescriber constructor.
+     * @param DocBlockFactoryInterface|null $docBlockFactory
+     */
     public function __construct(DocBlockFactoryInterface $docBlockFactory = null)
     {
         if (null === $docBlockFactory) {
@@ -30,6 +40,9 @@ final class PhpDocDescriber implements RouteDescriberInterface
         $this->docBlockFactory = $docBlockFactory;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         $classDocBlock = null;

@@ -9,15 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle;
+namespace ZQuintana\LaraSwag;
 
 use EXSyst\Component\Swagger\Swagger;
-use Nelmio\ApiDocBundle\Describer\DescriberInterface;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Model\ModelRegistry;
-use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use ZQuintana\LaraSwag\Describer\DescriberInterface;
+use ZQuintana\LaraSwag\Describer\ModelRegistryAwareInterface;
+use ZQuintana\LaraSwag\Model\ModelRegistry;
+use ZQuintana\LaraSwag\ModelDescriber\ModelDescriberInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
+/**
+ * Class ApiDocGenerator
+ */
 final class ApiDocGenerator
 {
     private $swagger;
@@ -28,6 +31,7 @@ final class ApiDocGenerator
     /**
      * @param DescriberInterface[]      $describers
      * @param ModelDescriberInterface[] $modelDescribers
+     * @param CacheItemPoolInterface    $cacheItemPool
      */
     public function __construct(array $describers, array $modelDescribers, CacheItemPoolInterface $cacheItemPool = null)
     {
@@ -36,6 +40,9 @@ final class ApiDocGenerator
         $this->cacheItemPool = $cacheItemPool;
     }
 
+    /**
+     * @return Swagger
+     */
     public function generate(): Swagger
     {
         if (null !== $this->swagger) {

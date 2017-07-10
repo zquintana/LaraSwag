@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Describer;
+namespace ZQuintana\LaraSwag\Describer;
 
 use EXSyst\Component\Swagger\Swagger;
-use Nelmio\ApiDocBundle\RouteDescriber\RouteDescriberInterface;
-use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use ZQuintana\LaraSwag\RouteDescriber\RouteDescriberInterface;
+use ZQuintana\LaraSwag\Util\ControllerReflector;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 

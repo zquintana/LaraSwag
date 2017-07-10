@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional\Entity;
+namespace ZQuintana\LaraSwag\Tests\Functional\Entity;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 

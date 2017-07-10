@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Functional;
+namespace ZQuintana\LaraSwag\Tests\Functional;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
-use FOS\RestBundle\FOSRestBundle;
-use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use ZQuintana\LaraSwag\NelmioApiDocBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -38,7 +37,6 @@ class TestKernel extends Kernel
             new SensioFrameworkExtraBundle(),
             new ApiPlatformBundle(),
             new NelmioApiDocBundle(),
-            new FOSRestBundle(),
             new TestBundle(),
         ];
     }

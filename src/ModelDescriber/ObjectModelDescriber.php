@@ -9,26 +9,41 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\ModelDescriber;
+namespace ZQuintana\LaraSwag\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareTrait;
-use Nelmio\ApiDocBundle\Model\Model;
+use ZQuintana\LaraSwag\Describer\ModelRegistryAwareInterface;
+use ZQuintana\LaraSwag\Describer\ModelRegistryAwareTrait;
+use ZQuintana\LaraSwag\Model\Model;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
 
+/**
+ * Class ObjectModelDescriber
+ */
 class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
 
     private $propertyInfo;
 
+
+    /**
+     * ObjectModelDescriber constructor.
+     *
+     * @param PropertyInfoExtractorInterface $propertyInfo
+     */
     public function __construct(PropertyInfoExtractorInterface $propertyInfo)
     {
         $this->propertyInfo = $propertyInfo;
     }
 
+    /**
+     * @param Model  $model
+     * @param Schema $schema
+     *
+     * @return void
+     */
     public function describe(Model $model, Schema $schema)
     {
         $schema->setType('object');
@@ -60,6 +75,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
         }
     }
 
+    /**
+     * @param Model $model
+     * @return bool
+     */
     public function supports(Model $model): bool
     {
         return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();

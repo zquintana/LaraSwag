@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Describer;
+namespace ZQuintana\LaraSwag\Describer;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Swagger;
-use Nelmio\ApiDocBundle\Annotation\Operation;
-use Nelmio\ApiDocBundle\SwaggerPhp\AddDefaults;
-use Nelmio\ApiDocBundle\SwaggerPhp\ModelRegister;
-use Nelmio\ApiDocBundle\Util\ControllerReflector;
+use ZQuintana\LaraSwag\Annotation\Operation;
+use ZQuintana\LaraSwag\SwaggerPhp\AddDefaults;
+use ZQuintana\LaraSwag\SwaggerPhp\ModelRegister;
+use ZQuintana\LaraSwag\Util\ControllerReflector;
 use Swagger\Analysis;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations as SWG;

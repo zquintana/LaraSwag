@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Describer;
+namespace ZQuintana\LaraSwag\Describer;
 
 use EXSyst\Component\Swagger\Swagger;
 

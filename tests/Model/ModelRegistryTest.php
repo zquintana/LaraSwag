@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Model;
+namespace ZQuintana\LaraSwag\Tests\Model;
 
-use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Swagger;
-use Nelmio\ApiDocBundle\Model\Model;
-use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use ZQuintana\LaraSwag\Model\Model;
+use ZQuintana\LaraSwag\Model\ModelRegistry;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyInfo\Type;
 

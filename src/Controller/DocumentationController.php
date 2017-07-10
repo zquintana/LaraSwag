@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Controller;
+namespace ZQuintana\LaraSwag\Controller;
 
-use Nelmio\ApiDocBundle\ApiDocGenerator;
+use ZQuintana\LaraSwag\ApiDocGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class DocumentationController

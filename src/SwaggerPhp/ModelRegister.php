@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\SwaggerPhp;
+namespace ZQuintana\LaraSwag\SwaggerPhp;
 
-use Nelmio\ApiDocBundle\Annotation\Model as ModelAnnotation;
-use Nelmio\ApiDocBundle\Model\Model;
-use Nelmio\ApiDocBundle\Model\ModelRegistry;
+use ZQuintana\LaraSwag\Annotation\Model as ModelAnnotation;
+use ZQuintana\LaraSwag\Model\Model;
+use ZQuintana\LaraSwag\Model\ModelRegistry;
 use Swagger\Analysis;
 use Swagger\Annotations\Items;
 use Swagger\Annotations\Parameter;
@@ -28,13 +28,25 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class ModelRegister
 {
+    /**
+     * @var ModelRegistry
+     */
     private $modelRegistry;
 
+
+    /**
+     * ModelRegister constructor.
+     *
+     * @param ModelRegistry $modelRegistry
+     */
     public function __construct(ModelRegistry $modelRegistry)
     {
         $this->modelRegistry = $modelRegistry;
     }
 
+    /**
+     * @param Analysis $analysis
+     */
     public function __invoke(Analysis $analysis)
     {
         foreach ($analysis->annotations as $annotation) {
@@ -70,9 +82,11 @@ final class ModelRegister
                 continue;
             }
 
-            $annotation->merge([new $annotationClass([
-                'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
-            ])]);
+            $annotation->merge([
+                new $annotationClass([
+                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
+                ]),
+            ]);
 
             // It is no longer an unmerged annotation
             foreach ($annotation->_unmerged as $key => $unmerged) {
@@ -86,6 +100,10 @@ final class ModelRegister
         }
     }
 
+    /**
+     * @param string $type
+     * @return Type
+     */
     private function createType(string $type): Type
     {
         if ('[]' === substr($type, -2)) {

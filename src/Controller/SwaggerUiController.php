@@ -9,28 +9,38 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Controller;
+namespace ZQuintana\LaraSwag\Controller;
 
-use Nelmio\ApiDocBundle\ApiDocGenerator;
+use ZQuintana\LaraSwag\ApiDocGenerator;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class SwaggerUiController
+ */
 final class SwaggerUiController
 {
+    /**
+     * @var ApiDocGenerator
+     */
     private $apiDocGenerator;
-    private $twig;
 
-    public function __construct(ApiDocGenerator $apiDocGenerator, \Twig_Environment $twig)
+
+    /**
+     * SwaggerUiController constructor.
+     *
+     * @param ApiDocGenerator $apiDocGenerator
+     */
+    public function __construct(ApiDocGenerator $apiDocGenerator)
     {
         $this->apiDocGenerator = $apiDocGenerator;
-        $this->twig = $twig;
     }
 
     public function __invoke()
     {
-        return new Response(
-            $this->twig->render('@NelmioApiDoc/SwaggerUi/index.html.twig', ['swagger_data' => ['spec' => $this->apiDocGenerator->generate()->toArray()]]),
-            Response::HTTP_OK,
-            ['Content-Type' => 'text/html']
-        );
+        return view('lara_swag::SwaggerUi.index', [
+            'swagger_data' => [
+                'spec' => $this->apiDocGenerator->generate()->toArray(),
+            ],
+        ]);
     }
 }

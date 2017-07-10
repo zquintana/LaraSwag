@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Model;
+namespace ZQuintana\LaraSwag\Model;
 
 use EXSyst\Component\Swagger\Schema;
 use EXSyst\Component\Swagger\Swagger;
-use Nelmio\ApiDocBundle\Describer\ModelRegistryAwareInterface;
-use Nelmio\ApiDocBundle\ModelDescriber\ModelDescriberInterface;
+use ZQuintana\LaraSwag\Describer\ModelRegistryAwareInterface;
+use ZQuintana\LaraSwag\ModelDescriber\ModelDescriberInterface;
 use Symfony\Component\PropertyInfo\Type;
 
 final class ModelRegistry

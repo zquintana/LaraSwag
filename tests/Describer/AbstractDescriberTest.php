@@ -9,15 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Nelmio\ApiDocBundle\Tests\Describer;
+namespace ZQuintana\LaraSwag\Tests\Describer;
 
 use EXSyst\Component\Swagger\Swagger;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class AbstractDescriberTest
+ */
 abstract class AbstractDescriberTest extends TestCase
 {
     protected $describer;
 
+
+    /**
+     * @return Swagger
+     */
     protected function getSwaggerDoc(): Swagger
     {
         $api = new Swagger();
