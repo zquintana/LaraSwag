@@ -45,7 +45,8 @@
     },
     "autoload": {
         "psr-4": {
-            "ZQuintana\\LaraSwag\\": ""
+            "ZQuintana\\LaraSwag\\Tests\\": "tests",
+            "ZQuintana\\LaraSwag\\": "src"
         }
     }
 }
