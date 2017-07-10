@@ -15,7 +15,7 @@ class PhpDocProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make('lara_swag.route_describers.php_doc', function () {
+        $this->app->bind('lara_swag.route_describers.php_doc', function () {
             return new PhpDocDescriber();
         });
         $this->app->tag([

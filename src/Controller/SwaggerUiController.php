@@ -35,7 +35,10 @@ final class SwaggerUiController
         $this->apiDocGenerator = $apiDocGenerator;
     }
 
-    public function __invoke()
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index()
     {
         return view('lara_swag::SwaggerUi.index', [
             'swagger_data' => [

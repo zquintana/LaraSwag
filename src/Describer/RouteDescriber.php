@@ -12,11 +12,14 @@
 namespace ZQuintana\LaraSwag\Describer;
 
 use EXSyst\Component\Swagger\Swagger;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\RouteCollection;
 use ZQuintana\LaraSwag\RouteDescriber\RouteDescriberInterface;
 use ZQuintana\LaraSwag\Util\ControllerReflector;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * Class RouteDescriber
+ */
 final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInterface
 {
     use ModelRegistryAwareTrait;
@@ -37,19 +40,23 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
         $this->routeDescribers = $routeDescribers;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function describe(Swagger $api)
     {
         if (0 === count($this->routeDescribers)) {
             return;
         }
 
-        foreach ($this->routeCollection->all() as $route) {
-            if (!$route->hasDefault('_controller')) {
+        foreach ($this->routeCollection as $route) {
+            /** @var Route $route */
+            if ($route->getActionName() instanceof \Closure) {
                 continue;
             }
 
             // if able to resolve the controller
-            $controller = $route->getDefault('_controller');
+            $controller = $route->getActionName();
             if ($method = $this->controllerReflector->getReflectionMethod($controller)) {
                 // Extract as many informations as possible about this route
                 foreach ($this->routeDescribers as $describer) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace ZQuintana\LaraSwag;
+namespace ZQuintana\LaraSwag\Provider;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Illuminate\Container\Container;
@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use ZQuintana\LaraSwag\ApiDocGenerator;
 use ZQuintana\LaraSwag\Controller\SwaggerUiController;
 use ZQuintana\LaraSwag\Describer\DefaultDescriber;
 use ZQuintana\LaraSwag\Describer\ExternalDocDescriber;
@@ -17,8 +18,6 @@ use ZQuintana\LaraSwag\ModelDescriber\CollectionModelDescriber;
 use ZQuintana\LaraSwag\ModelDescriber\FormModelDescriber;
 use ZQuintana\LaraSwag\ModelDescriber\ObjectModelDescriber;
 use ZQuintana\LaraSwag\ModelDescriber\ScalarModelDescriber;
-use ZQuintana\LaraSwag\Provider\PhpDocProvider;
-use ZQuintana\LaraSwag\Provider\SwaggerProvider;
 use ZQuintana\LaraSwag\RouteDescriber\RouteMetadataDescriber;
 use ZQuintana\LaraSwag\Routing\FilteredRouteCollectionBuilder;
 use ZQuintana\LaraSwag\Util\ControllerReflector;
@@ -33,8 +32,9 @@ class LaraSwagProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerViews();
         $this->publishes([
-            __DIR__.'/../../config/lara_swag.php',
+            __DIR__.'/../../config/lara_swag.php' => config_path('lara_swag.php'),
         ], 'config');
     }
 
@@ -51,7 +51,6 @@ class LaraSwagProvider extends ServiceProvider
 
         $this->registerUtils()
             ->registerDescribers()
-            ->registerViews()
             ->registerController()
             ->registerGenerator()
         ;
@@ -199,13 +198,13 @@ class LaraSwagProvider extends ServiceProvider
      */
     private function registerViews()
     {
-        $viewPath = resource_path('views/lara_swag');
+        $viewPath = resource_path('views/vendor/lara_swag');
 
         $sourcePath = __DIR__.'/../../resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath,
-            __DIR__.'../../resources/public' => public_path('vendor/lara_swag'),
+            __DIR__.'/../../resources/public' => public_path('vendor/lara_swag'),
         ]);
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {

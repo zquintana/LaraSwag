@@ -42,13 +42,13 @@ final class ControllerReflector
     /**
      * Returns the ReflectionMethod for the given controller string.
      *
-     * @param string $controller
+     * @param string $action
      *
      * @return \ReflectionMethod|null
      */
-    public function getReflectionMethod(string $controller)
+    public function getReflectionMethod(string $action)
     {
-        $callable = $this->getClassAndMethod($controller);
+        $callable = $this->getClassAndMethod($action);
         if (null === $callable) {
             return null;
         }
@@ -88,24 +88,21 @@ final class ControllerReflector
     }
 
     /**
-     * @param string $controller
+     * @param string $action
      *
      * @return array|mixed|null
      */
-    private function getClassAndMethod(string $controller)
+    private function getClassAndMethod(string $action)
     {
-        if (isset($this->controllers[$controller])) {
-            return $this->controllers[$controller];
+        if (isset($this->controllers[$action])) {
+            return $this->controllers[$action];
         }
 
-        if (preg_match('#(.+)::([\w]+)#', $controller, $matches)) {
+        if (preg_match('#(.+)@([\w]+)#', $action, $matches)) {
             $class = $matches[1];
             $method = $matches[2];
-        } elseif (class_exists($controller)) {
-            $class = $controller;
-            $method = '__invoke';
         } else {
-            if (preg_match('#(.+):([\w]+)#', $controller, $matches)) {
+            if (preg_match('#(.+):([\w]+)#', $action, $matches)) {
                 $controller = $matches[1];
                 $method = $matches[2];
             }
