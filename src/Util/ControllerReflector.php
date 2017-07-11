@@ -98,30 +98,19 @@ final class ControllerReflector
             return $this->controllers[$action];
         }
 
-        if (preg_match('#(.+)@([\w]+)#', $action, $matches)) {
-            $class = $matches[1];
-            $method = $matches[2];
-        } else {
-            if (preg_match('#(.+):([\w]+)#', $action, $matches)) {
-                $controller = $matches[1];
-                $method = $matches[2];
-            }
-
-            if ($this->container->bound($controller)) {
-                $class = get_class($this->container->make($controller));
-
-                if (!isset($method) && method_exists($class, '__invoke')) {
-                    $method = '__invoke';
-                }
-            }
+        if (!preg_match('#(.+)@([\w]+)#', $action, $matches)) {
+            return null;
         }
 
+        $class = $matches[1];
+        $method = $matches[2];
+
         if (!isset($class) || !isset($method)) {
-            $this->controllers[$controller] = null;
+            $this->controllers[$class] = null;
 
             return null;
         }
 
-        return $this->controllers[$controller] = [$class, $method];
+        return $this->controllers[$class] = [$class, $method];
     }
 }

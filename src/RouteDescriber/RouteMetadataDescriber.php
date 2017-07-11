@@ -27,7 +27,7 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
-            $operation->merge(['schemes' => $route->secure() ? 'https' : 'http']);
+            $operation->merge(['schemes' => [$route->secure() ? 'https' : 'http']]);
 
 //            $requirements = $route->getRequirements();
 

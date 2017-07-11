@@ -2,6 +2,7 @@
 
 namespace ZQuintana\LaraSwag\Controller;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use ZQuintana\LaraSwag\ApiDocGenerator;
 
@@ -31,10 +32,14 @@ final class SwaggerUiController extends Controller
      */
     public function index()
     {
-        return view('lara_swag::SwaggerUi.index', [
-            'swagger_data' => [
-                'spec' => $this->apiDocGenerator->generate()->toArray(),
-            ],
-        ]);
+        return view('lara_swag::SwaggerUi.index');
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function spec()
+    {
+        return response()->json($this->apiDocGenerator->generate()->toArray());
     }
 }

@@ -17,4 +17,6 @@ return [
 
         'host' => null,
     ],
+
+    'security' => [],
 ];

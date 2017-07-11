@@ -35,6 +35,7 @@ class LaraSwagProvider extends ServiceProvider
         $this->registerViews();
         $this->publishes([
             __DIR__.'/../../config/lara_swag.php' => config_path('lara_swag.php'),
+            __DIR__.'/../../config/routing/lara_swag.php' => app_path('Http/routes/lara_swag.php'),
         ], 'config');
     }
 
@@ -98,6 +99,7 @@ class LaraSwagProvider extends ServiceProvider
                 $container->tagged('lara_swag.describer'),
                 $container->tagged('lara_swag.model_describers'),
                 null,
+                $config->get('lara_swag.security', []),
                 $config->get('lara_swag.routes.host')
             );
         });

@@ -48,23 +48,31 @@ final class ApiDocGenerator
      */
     private $host;
 
+    /**
+     * @var array
+     */
+    private $security;
+
 
     /**
      * @param DescriberInterface[]      $describers
      * @param ModelDescriberInterface[] $modelDescribers
      * @param CacheItemPoolInterface    $cacheItemPool
+     * @param array                     $security
      * @param string                    $host
      */
     public function __construct(
         array $describers,
         array $modelDescribers,
         CacheItemPoolInterface $cacheItemPool = null,
+        array $security = [],
         $host = null
     ) {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
-        $this->host = $host;
+        $this->security = $security;
+        $this->host     = $host;
     }
 
     /**
@@ -83,7 +91,14 @@ final class ApiDocGenerator
             }
         }
 
-        $this->swagger = new Swagger();
+        $data = [];
+        if (!empty($this->security)) {
+            $data['securityDefinitions'] = isset($this->security['definition']) ?
+                $this->security['definition'] : [];
+            $data['security'] = isset($this->security['global']) ?
+                $this->security['global'] : null;
+        }
+        $this->swagger = new Swagger($data);
         if ($this->host) {
             $this->swagger->setHost($this->host);
         }
