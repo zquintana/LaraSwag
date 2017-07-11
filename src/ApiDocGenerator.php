@@ -23,21 +23,48 @@ use Psr\Cache\CacheItemPoolInterface;
  */
 final class ApiDocGenerator
 {
+    /**
+     * @var Swagger
+     */
     private $swagger;
+
+    /**
+     * @var array|DescriberInterface[]
+     */
     private $describers;
+
+    /**
+     * @var array|ModelDescriberInterface[]
+     */
     private $modelDescribers;
+
+    /**
+     * @var CacheItemPoolInterface
+     */
     private $cacheItemPool;
+
+    /**
+     * @var string
+     */
+    private $host;
+
 
     /**
      * @param DescriberInterface[]      $describers
      * @param ModelDescriberInterface[] $modelDescribers
      * @param CacheItemPoolInterface    $cacheItemPool
+     * @param string                    $host
      */
-    public function __construct(array $describers, array $modelDescribers, CacheItemPoolInterface $cacheItemPool = null)
-    {
+    public function __construct(
+        array $describers,
+        array $modelDescribers,
+        CacheItemPoolInterface $cacheItemPool = null,
+        $host = null
+    ) {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
+        $this->host = $host;
     }
 
     /**
@@ -57,6 +84,10 @@ final class ApiDocGenerator
         }
 
         $this->swagger = new Swagger();
+        if ($this->host) {
+            $this->swagger->setHost($this->host);
+        }
+
         $modelRegistry = new ModelRegistry($this->modelDescribers, $this->swagger);
         foreach ($this->describers as $describer) {
             if ($describer instanceof ModelRegistryAwareInterface) {

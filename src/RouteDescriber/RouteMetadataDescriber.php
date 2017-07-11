@@ -12,7 +12,7 @@
 namespace ZQuintana\LaraSwag\RouteDescriber;
 
 use EXSyst\Component\Swagger\Swagger;
-use Symfony\Component\Routing\Route;
+use Illuminate\Routing\Route;
 
 /**
  * Class RouteMetadataDescriber
@@ -27,13 +27,12 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
     public function describe(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod)
     {
         foreach ($this->getOperations($api, $route) as $operation) {
-            $operation->merge(['schemes' => $route->getSchemes()]);
+            $operation->merge(['schemes' => $route->secure() ? 'https' : 'http']);
 
-            $requirements = $route->getRequirements();
-            $compiledRoute = $route->compile();
+//            $requirements = $route->getRequirements();
 
             // Don't include host requirements
-            foreach ($compiledRoute->getPathVariables() as $pathVariable) {
+            foreach ($route->parameterNames() as $pathVariable) {
                 if ('_format' === $pathVariable) {
                     continue;
                 }
@@ -42,9 +41,9 @@ final class RouteMetadataDescriber implements RouteDescriberInterface
                 $parameter->setRequired(true);
                 $parameter->setType('string');
 
-                if (isset($requirements[$pathVariable])) {
-                    $parameter->setFormat($requirements[$pathVariable]);
-                }
+//                if (isset($requirements[$pathVariable])) {
+//                    $parameter->setFormat($requirements[$pathVariable]);
+//                }
             }
         }
     }

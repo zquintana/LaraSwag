@@ -64,7 +64,7 @@ class LaraSwagProvider extends ServiceProvider
         $this->app->bind('lara_swag.routes', function (Container $container) {
             $config = $container->make('config');
             $patterns = $config->get('lara_swag.routes.path_patterns');
-            $routes   = $container->make('router')->getRoutes()->getRoutes();
+            $routes   = $container->make('router')->getRoutes();
 
             if (count($patterns)) {
                 $filteredCollection = new FilteredRouteCollectionBuilder(
@@ -92,9 +92,13 @@ class LaraSwagProvider extends ServiceProvider
     private function registerGenerator()
     {
         $this->app->singleton('lara_swag.generator', function (Container $container) {
+            $config = $container->make('config');
+
             return new ApiDocGenerator(
                 $container->tagged('lara_swag.describer'),
-                $container->tagged('lara_swag.model_describers')
+                $container->tagged('lara_swag.model_describers'),
+                null,
+                $config->get('lara_swag.routes.host')
             );
         });
 
@@ -118,7 +122,7 @@ class LaraSwagProvider extends ServiceProvider
         });
         $this->app->bind('lara_swag.describers.route', function (Container $container) {
             return new RouteDescriber(
-                $container->make('router')->getRoutes(),
+                $container->make('lara_swag.routes'),
                 $container->make('lara_swag.controller_reflector'),
                 $container->tagged('lara_swag.route_describer')
             );

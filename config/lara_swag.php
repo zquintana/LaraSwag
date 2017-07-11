@@ -3,7 +3,9 @@
 return [
     'documentation' => [
         'info' => [
-            'title' => 'My App',
+            'title'       => 'My App',
+            'description' => 'My awesome app',
+            'version'     => '1.0.0',
         ],
     ],
 
@@ -12,5 +14,7 @@ return [
          * Patterns you want to document
          */
         'path_patterns' => [],
+
+        'host' => null,
     ],
 ];

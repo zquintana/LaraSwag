@@ -11,8 +11,8 @@
 
 namespace ZQuintana\LaraSwag\Routing;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\RouteCollection;
 
 /**
  * Class FilteredRouteCollectionBuilder
@@ -36,16 +36,16 @@ final class FilteredRouteCollectionBuilder
     }
 
     /**
-     * @param RouteCollection $routes
+     * @param array $routes
      *
      * @return RouteCollection
      */
-    public function filter(RouteCollection $routes): RouteCollection
+    public function filter($routes): RouteCollection
     {
         $filteredRoutes = new RouteCollection();
-        foreach ($routes->all() as $name => $route) {
+        foreach ($routes as $name => $route) {
             if ($this->match($route)) {
-                $filteredRoutes->add($name, $route);
+                $filteredRoutes->add($route);
             }
         }
 

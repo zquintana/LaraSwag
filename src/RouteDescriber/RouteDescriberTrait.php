@@ -13,7 +13,7 @@ namespace ZQuintana\LaraSwag\RouteDescriber;
 
 use EXSyst\Component\Swagger\Operation;
 use EXSyst\Component\Swagger\Swagger;
-use Symfony\Component\Routing\Route;
+use Illuminate\Routing\Route;
 
 /**
  * @internal
@@ -54,6 +54,6 @@ trait RouteDescriberTrait
             $path = substr($path, 0, -10);
         }
 
-        return $path;
+        return sprintf('/%s', $path);
     }
 }

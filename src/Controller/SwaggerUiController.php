@@ -1,23 +1,14 @@
 <?php
 
-/*
- * This file is part of the NelmioApiDocBundle package.
- *
- * (c) Nelmio
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ZQuintana\LaraSwag\Controller;
 
+use Illuminate\Routing\Controller;
 use ZQuintana\LaraSwag\ApiDocGenerator;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class SwaggerUiController
  */
-final class SwaggerUiController
+final class SwaggerUiController extends Controller
 {
     /**
      * @var ApiDocGenerator

@@ -12,7 +12,7 @@
 namespace ZQuintana\LaraSwag\RouteDescriber;
 
 use EXSyst\Component\Swagger\Swagger;
-use Symfony\Component\Routing\Route;
+use Illuminate\Routing\Route;
 
 /**
  * Interface RouteDescriberInterface

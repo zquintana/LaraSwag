@@ -12,9 +12,9 @@
 namespace ZQuintana\LaraSwag\RouteDescriber;
 
 use EXSyst\Component\Swagger\Swagger;
+use Illuminate\Routing\Route;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use Symfony\Component\Routing\Route;
 
 /**
  * Class PhpDocDescriber

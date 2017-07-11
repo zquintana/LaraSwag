@@ -15,8 +15,7 @@ file that was distributed with this source code. #}
     <link rel="stylesheet" href="{{ asset('vendor/lara_swag/swagger-ui/swagger-ui.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/lara_swag/style.css') }}">
 
-    {# json_encode(65) is for JSON_UNESCAPED_SLASHES|JSON_HEX_TAG to avoid JS XSS #}
-    <script id="swagger-data" type="application/json">{{ swagger_data|json_encode(65)|raw }}</script>
+    <script id="swagger-data" type="application/json">{!! json_encode($swagger_data, JSON_UNESCAPED_SLASHES|JSON_HEX_TAG) !!}</script>
 </head>
 <body>
     <header>
