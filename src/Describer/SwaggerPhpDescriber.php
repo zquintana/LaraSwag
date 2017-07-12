@@ -174,7 +174,7 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
             $path = substr($path, 0, -10);
         }
 
-        return $path;
+        return sprintf('/%s', $path);
     }
 
     private function updateNestedAnnotations($value, Context $context)
