@@ -32,7 +32,7 @@ final class SwaggerUiController extends Controller
      */
     public function index()
     {
-        return view('lara_swag::SwaggerUi.index');
+        return view(config('lara_swag.ui_template'));
     }
 
     /**

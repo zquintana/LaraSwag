@@ -19,4 +19,6 @@ return [
     ],
 
     'security' => [],
+
+    'ui_template' => 'lara_swag::SwaggerUi.index',
 ];
