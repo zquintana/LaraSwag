@@ -57,7 +57,7 @@ final class PhpDocDescriber implements RouteDescriberInterface
         } catch (\Exception $e) {
         }
 
-        foreach ($this->getOperations($api, $route) as $operation) {
+        foreach ($this->getOperations($api, $route, $reflectionMethod) as $operation) {
             if (null !== $docBlock) {
                 if (null === $operation->getSummary() && '' !== $docBlock->getSummary()) {
                     $operation->setSummary($docBlock->getSummary());

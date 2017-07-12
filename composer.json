@@ -18,7 +18,8 @@
         "php": "~7.0|~7.1",
         "symfony/property-info": "^3.1|^4.0",
         "exsyst/swagger": "~0.2.3",
-        "zircote/swagger-php": "^2.0.9"
+        "zircote/swagger-php": "^2.0.9",
+        "indigophp/doctrine-annotation-autoload": "^0.1"
     },
     "require-dev": {
         "symfony/templating": "^2.8|^3.0|^4.0",

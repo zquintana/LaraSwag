@@ -3,6 +3,7 @@
 namespace ZQuintana\LaraSwag\Provider;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -168,7 +169,7 @@ class LaraSwagProvider extends ServiceProvider
             $this->app->bind('lara_swag.model_describers.form', function (Container $container) {
                 return new FormModelDescriber($container->make(FormFactoryInterface::class));
             });
-            $modelDescribers[] = 'lara_swag.model_describers.form';
+            array_unshift($modelDescribers, 'lara_swag.model_describers.form');
         }
         $this->app->tag($modelDescribers, 'lara_swag.model_describers');
 

@@ -25,6 +25,6 @@ class SwaggerProvider extends ServiceProvider
         });
         $this->app->tag([
             'lara_swag.describers.swagger_php',
-        ], 'nelmio_api_doc.describer');
+        ], 'lara_swag.describer');
     }
 }

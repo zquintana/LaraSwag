@@ -12,6 +12,7 @@
 namespace ZQuintana\LaraSwag\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
+use Symfony\Component\Form\Form;
 use ZQuintana\LaraSwag\Describer\ModelRegistryAwareInterface;
 use ZQuintana\LaraSwag\Describer\ModelRegistryAwareTrait;
 use ZQuintana\LaraSwag\Model\Model;
@@ -59,8 +60,10 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
     {
         $properties = $schema->getProperties();
         foreach ($form as $name => $child) {
+            /** @var Form $child */
             $config = $child->getConfig();
             $property = $properties->get($name);
+
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 $blockPrefix = $type->getBlockPrefix();
 

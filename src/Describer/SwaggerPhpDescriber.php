@@ -13,6 +13,8 @@ namespace ZQuintana\LaraSwag\Describer;
 
 use Doctrine\Common\Annotations\Reader;
 use EXSyst\Component\Swagger\Swagger;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\RouteCollection;
 use ZQuintana\LaraSwag\Annotation\Operation;
 use ZQuintana\LaraSwag\SwaggerPhp\AddDefaults;
 use ZQuintana\LaraSwag\SwaggerPhp\ModelRegister;
@@ -21,7 +23,6 @@ use Swagger\Analysis;
 use Swagger\Annotations\AbstractAnnotation;
 use Swagger\Annotations as SWG;
 use Swagger\Context;
-use Symfony\Component\Routing\RouteCollection;
 
 final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelRegistryAwareInterface
 {
@@ -149,12 +150,13 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
 
     private function getMethodsToParse(): \Generator
     {
-        foreach ($this->routeCollection->all() as $route) {
-            if (!$route->hasDefault('_controller')) {
+        foreach ($this->routeCollection->getRoutes() as $route) {
+            /** @var Route $route */
+            if ('Closure' === $route->getActionName()) {
                 continue;
             }
 
-            $controller = $route->getDefault('_controller');
+            $controller = $route->getActionName();
             if ($callable = $this->controllerReflector->getReflectionClassAndMethod($controller)) {
                 list($class, $method) = $callable;
                 $path = $this->normalizePath($route->getPath());
