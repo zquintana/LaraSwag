@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the NelmioApiDocBundle package.
- *
- * (c) Nelmio
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ZQuintana\LaraSwag\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
@@ -17,6 +8,7 @@ use ZQuintana\LaraSwag\Describer\ModelRegistryAwareTrait;
 use ZQuintana\LaraSwag\Model\Model;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 use Symfony\Component\PropertyInfo\Type;
+use ZQuintana\LaraSwag\Model\ModelInterface;
 
 /**
  * Class ObjectModelDescriber
@@ -39,13 +31,11 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
-     * @param Model  $model
-     * @param Schema $schema
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function describe(Model $model, Schema $schema)
+    public function describe(ModelInterface $model, Schema $schema)
     {
+        /** @var Model $model */
         $schema->setType('object');
         $properties = $schema->getProperties();
 
@@ -76,11 +66,10 @@ class ObjectModelDescriber implements ModelDescriberInterface, ModelRegistryAwar
     }
 
     /**
-     * @param Model $model
-     * @return bool
+     * {@inheritdoc}
      */
-    public function supports(Model $model): bool
+    public function supports(ModelInterface $model): bool
     {
-        return Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();
+        return $model instanceof Model && Type::BUILTIN_TYPE_OBJECT === $model->getType()->getBuiltinType();
     }
 }

@@ -12,7 +12,7 @@
 namespace ZQuintana\LaraSwag\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
-use ZQuintana\LaraSwag\Model\Model;
+use ZQuintana\LaraSwag\Model\ModelInterface;
 
 /**
  * Interface ModelDescriberInterface
@@ -20,15 +20,15 @@ use ZQuintana\LaraSwag\Model\Model;
 interface ModelDescriberInterface
 {
     /**
-     * @param Model  $model
-     * @param Schema $schema
+     * @param ModelInterface $model
+     * @param Schema         $schema
      * @return mixed
      */
-    public function describe(Model $model, Schema $schema);
+    public function describe(ModelInterface $model, Schema $schema);
 
     /**
-     * @param Model $model
+     * @param ModelInterface $model
      * @return bool
      */
-    public function supports(Model $model): bool;
+    public function supports(ModelInterface $model): bool;
 }

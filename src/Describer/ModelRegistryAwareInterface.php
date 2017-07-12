@@ -13,7 +13,14 @@ namespace ZQuintana\LaraSwag\Describer;
 
 use ZQuintana\LaraSwag\Model\ModelRegistry;
 
+/**
+ * Interface ModelRegistryAwareInterface
+ */
 interface ModelRegistryAwareInterface
 {
+    /**
+     * @param ModelRegistry $modelRegistry
+     * @return mixed
+     */
     public function setModelRegistry(ModelRegistry $modelRegistry);
 }

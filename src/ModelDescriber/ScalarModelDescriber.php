@@ -1,19 +1,11 @@
 <?php
 
-/*
- * This file is part of the NelmioApiDocBundle package.
- *
- * (c) Nelmio
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ZQuintana\LaraSwag\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
 use ZQuintana\LaraSwag\Model\Model;
 use Symfony\Component\PropertyInfo\Type;
+use ZQuintana\LaraSwag\Model\ModelInterface;
 
 /**
  * Class ScalarModelDescriber
@@ -34,8 +26,9 @@ class ScalarModelDescriber implements ModelDescriberInterface
     /**
      * {@inheritdoc}
      */
-    public function describe(Model $model, Schema $schema)
+    public function describe(ModelInterface $model, Schema $schema)
     {
+        /** @var Model $model */
         $type = self::$supportedTypes[$model->getType()->getBuiltinType()];
         $schema->setType($type);
     }
@@ -43,8 +36,8 @@ class ScalarModelDescriber implements ModelDescriberInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(Model $model): bool
+    public function supports(ModelInterface $model): bool
     {
-        return isset(self::$supportedTypes[$model->getType()->getBuiltinType()]);
+        return $model instanceof Model && isset(self::$supportedTypes[$model->getType()->getBuiltinType()]);
     }
 }

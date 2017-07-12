@@ -1,23 +1,15 @@
 <?php
 
-/*
- * This file is part of the NelmioApiDocBundle package.
- *
- * (c) Nelmio
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ZQuintana\LaraSwag\ModelDescriber;
 
 use EXSyst\Component\Swagger\Schema;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use ZQuintana\LaraSwag\Describer\ModelRegistryAwareInterface;
 use ZQuintana\LaraSwag\Describer\ModelRegistryAwareTrait;
-use ZQuintana\LaraSwag\Model\Model;
+use ZQuintana\LaraSwag\Model\FormModel;
+use ZQuintana\LaraSwag\Model\ModelInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @internal
@@ -28,12 +20,19 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
     private $formFactory;
 
+    /**
+     * FormModelDescriber constructor.
+     * @param FormFactoryInterface|null $formFactory
+     */
     public function __construct(FormFactoryInterface $formFactory = null)
     {
         $this->formFactory = $formFactory;
     }
 
-    public function describe(Model $model, Schema $schema)
+    /**
+     * {@inheritdoc}
+     */
+    public function describe(ModelInterface $model, Schema $schema)
     {
         if (method_exists('Symfony\Component\Form\AbstractType', 'setDefaultOptions')) {
             throw new \LogicException('symfony/form < 3.0 is not supported, please upgrade to an higher version to use a form as a model.');
@@ -42,20 +41,28 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             throw new \LogicException('You need to enable forms in your application to use a form as a model.');
         }
 
+        /** @var \ZQuintana\LaraSwag\Model\FormModel $model */
         $schema->setType('object');
-        $properties = $schema->getProperties();
-
-        $class = $model->getType()->getClassName();
+        $class = $model->getClass();
 
         $form = $this->formFactory->create($class, null, []);
         $this->parseForm($schema, $form);
     }
 
-    public function supports(Model $model): bool
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(ModelInterface $model): bool
     {
-        return is_a($model->getType()->getClassName(), FormTypeInterface::class, true);
+        return $model instanceof \ZQuintana\LaraSwag\Model\FormModel;
     }
 
+    /**
+     * @param Schema        $schema
+     * @param FormInterface $form
+     *
+     * @return void
+     */
     private function parseForm(Schema $schema, $form)
     {
         $properties = $schema->getProperties();
@@ -63,6 +70,14 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
             /** @var Form $child */
             $config = $child->getConfig();
             $property = $properties->get($name);
+
+            if ($config->getCompound()) {
+                $innerClass = get_class($config->getType()->getInnerType());
+                $property->setType('object');
+                $property->setRef($this->modelRegistry->register(new FormModel($innerClass)));
+
+                continue;
+            }
 
             for ($type = $config->getType(); null !== $type; $type = $type->getParent()) {
                 $blockPrefix = $type->getBlockPrefix();

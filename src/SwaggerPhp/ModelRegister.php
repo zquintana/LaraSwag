@@ -11,7 +11,10 @@
 
 namespace ZQuintana\LaraSwag\SwaggerPhp;
 
+use Swagger\Annotations\AbstractAnnotation;
+use ZQuintana\LaraSwag\Annotation\Form as FormAnnotation;
 use ZQuintana\LaraSwag\Annotation\Model as ModelAnnotation;
+use ZQuintana\LaraSwag\Model\FormModel;
 use ZQuintana\LaraSwag\Model\Model;
 use ZQuintana\LaraSwag\Model\ModelRegistry;
 use Swagger\Analysis;
@@ -28,6 +31,14 @@ use Symfony\Component\PropertyInfo\Type;
  */
 final class ModelRegister
 {
+    /**
+     * @var array
+     */
+    private $annotationMap = [
+        ModelAnnotation::class => Model::class,
+        FormAnnotation::class  => FormModel::class,
+    ];
+
     /**
      * @var ModelRegistry
      */
@@ -50,54 +61,75 @@ final class ModelRegister
     public function __invoke(Analysis $analysis)
     {
         foreach ($analysis->annotations as $annotation) {
-            if ($annotation instanceof Response) {
-                $annotationClass = Schema::class;
-            } elseif ($annotation instanceof Parameter) {
-                if ('array' === $annotation->type) {
-                    $annotationClass = Items::class;
-                } else {
-                    $annotationClass = Schema::class;
+            if (!$annotation instanceof AbstractAnnotation) {
+                continue;
+            }
+
+            foreach ($annotation->_unmerged as $key => $unmerged) {
+                if ($unmerged instanceof ModelAnnotation) {
+                    $schema = $this->createModelSchema($annotation, $unmerged);
+                    $annotation->merge([ $schema ]);
+
+                    // It is no longer an unmerged annotation
+                    unset($annotation->_unmerged[$key]);
+                    $analysis->annotations->detach($unmerged);
+
+                    break;
                 }
-            } elseif ($annotation instanceof Schema) {
+            }
+
+            if ($annotation instanceof FormAnnotation) {
+                $this->processFormAnnotation($annotation);
+            }
+        }
+    }
+
+    /**
+     * @param FormAnnotation $anno
+     * @return AbstractAnnotation[]
+     */
+    private function processFormAnnotation(FormAnnotation $anno)
+    {
+        $form = new FormModel($anno->class, $anno->name, $anno->groups);
+
+        return $anno->merge([
+            'required' => true,
+            'schema'   => new Schema([
+                'ref' => $this->modelRegistry->register($form),
+            ]),
+        ]);
+    }
+
+    /**
+     * @param AbstractAnnotation $annotation
+     * @param ModelAnnotation    $anno
+     *
+     * @return Schema
+     */
+    private function createModelSchema(AbstractAnnotation $annotation, ModelAnnotation $anno)
+    {
+        if ($annotation instanceof Response) {
+            $annotationClass = Schema::class;
+        } elseif ($annotation instanceof Parameter) {
+            if ('array' === $annotation->type) {
                 $annotationClass = Items::class;
             } else {
-                continue;
+                $annotationClass = Schema::class;
             }
-
-            $model = null;
-            foreach ($annotation->_unmerged as $unmerged) {
-                if ($unmerged instanceof ModelAnnotation) {
-                    $model = $unmerged;
-
-                    break;
-                }
-            }
-
-            if (null === $model || !$model instanceof ModelAnnotation) {
-                continue;
-            }
-
-            if (!is_string($model->type)) {
-                // Ignore invalid annotations, they are validated later
-                continue;
-            }
-
-            $annotation->merge([
-                new $annotationClass([
-                    'ref' => $this->modelRegistry->register(new Model($this->createType($model->type), $model->groups)),
-                ]),
-            ]);
-
-            // It is no longer an unmerged annotation
-            foreach ($annotation->_unmerged as $key => $unmerged) {
-                if ($unmerged === $model) {
-                    unset($annotation->_unmerged[$key]);
-
-                    break;
-                }
-            }
-            $analysis->annotations->detach($model);
+        } elseif ($annotation instanceof Schema) {
+            $annotationClass = Items::class;
+        } else {
+            return null;
         }
+
+        if (!is_string($anno->type)) {
+            // Ignore invalid annotations, they are validated later
+            return null;
+        }
+
+        return new $annotationClass([
+            'ref' => $this->modelRegistry->register(new Model($this->createType($anno->type), $anno->groups)),
+        ]);
     }
 
     /**

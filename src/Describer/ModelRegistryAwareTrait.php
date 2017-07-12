@@ -1,24 +1,29 @@
 <?php
 
-/*
- * This file is part of the NelmioApiDocBundle package.
- *
- * (c) Nelmio
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ZQuintana\LaraSwag\Describer;
 
 use ZQuintana\LaraSwag\Model\ModelRegistry;
 
+/**
+ * Trait ModelRegistryAwareTrait
+ */
 trait ModelRegistryAwareTrait
 {
+    /**
+     * @var ModelRegistry
+     */
     private $modelRegistry;
 
+
+    /**
+     * @param ModelRegistry $modelRegistry
+     *
+     * @return $this
+     */
     public function setModelRegistry(ModelRegistry $modelRegistry)
     {
         $this->modelRegistry = $modelRegistry;
+
+        return $this;
     }
 }

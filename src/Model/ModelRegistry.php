@@ -17,18 +17,42 @@ use ZQuintana\LaraSwag\Describer\ModelRegistryAwareInterface;
 use ZQuintana\LaraSwag\ModelDescriber\ModelDescriberInterface;
 use Symfony\Component\PropertyInfo\Type;
 
+/**
+ * Class ModelRegistry
+ */
 final class ModelRegistry
 {
+    /**
+     * @var array
+     */
     private $unregistered = [];
-    private $models = [];
-    private $names = [];
-    private $modelDescribers = [];
-    private $api;
 
     /**
-     * @param ModelDescriberInterface[] $modelDescribers
+     * @var ModelInterface[]
+     */
+    private $models = [];
+
+    /**
+     * @var array
+     */
+    private $names = [];
+
+    /**
+     * @var array|ModelDescriberInterface[]
+     */
+    private $modelDescribers = [];
+
+    /**
+     * @var Swagger
+     */
+    private $api;
+
+
+    /**
+     * ModelRegistry constructor.
      *
-     * @internal
+     * @param array   $modelDescribers
+     * @param Swagger $api
      */
     public function __construct(array $modelDescribers, Swagger $api)
     {
@@ -36,14 +60,18 @@ final class ModelRegistry
         $this->api = $api;
     }
 
-    public function register(Model $model): string
+    /**
+     * @param ModelInterface $model
+     * @return string
+     */
+    public function register(ModelInterface $model): string
     {
         $hash = $model->getHash();
         if (isset($this->names[$hash])) {
             return '#/definitions/'.$this->names[$hash];
         }
 
-        $this->names[$hash] = $name = $this->generateModelName($model);
+        $this->names[$hash] = $name = $model->getName();
         $this->models[$hash] = $model;
         $this->unregistered[] = $hash;
 
@@ -86,34 +114,6 @@ final class ModelRegistry
                 $this->api->getDefinitions()->set($name, $schema);
             }
         }
-    }
-
-    private function generateModelName(Model $model): string
-    {
-        $definitions = $this->api->getDefinitions();
-        $base = $name = $this->getTypeShortName($model->getType());
-        $i = 1;
-        while ($definitions->has($name)) {
-            ++$i;
-            $name = $base.$i;
-        }
-
-        return $name;
-    }
-
-    private function getTypeShortName(Type $type): string
-    {
-        if (null !== $type->getCollectionValueType()) {
-            return $this->getTypeShortName($type->getCollectionValueType()).'[]';
-        }
-
-        if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
-            $parts = explode('\\', $type->getClassName());
-
-            return end($parts);
-        }
-
-        return $type->getBuiltinType();
     }
 
     private function typeToString(Type $type): string

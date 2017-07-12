@@ -1,25 +1,28 @@
 <?php
 
-/*
- * This file is part of the NelmioApiDocBundle package.
- *
- * (c) Nelmio
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace ZQuintana\LaraSwag\Model;
 
 use Symfony\Component\PropertyInfo\Type;
 
-final class Model
+/**
+ * Class Model
+ */
+final class Model extends AbstractModel
 {
+    /**
+     * @var Type
+     */
     private $type;
+
+    /**
+     * @var array|null
+     */
     private $groups;
 
     /**
-     * @param string[]|null $groups
+     * Model constructor.
+     * @param Type       $type
+     * @param array|null $groups
      */
     public function __construct(Type $type, array $groups = null)
     {
@@ -43,8 +46,30 @@ final class Model
         return $this->groups;
     }
 
-    public function getHash(): string
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
-        return md5(serialize([$this->type, $this->groups]));
+        return $this->getTypeShortName($this->type);
+    }
+
+    /**
+     * @param Type $type
+     * @return string
+     */
+    private function getTypeShortName(Type $type): string
+    {
+        if (null !== $type->getCollectionValueType()) {
+            return $this->getTypeShortName($type->getCollectionValueType()).'[]';
+        }
+
+        if (Type::BUILTIN_TYPE_OBJECT === $type->getBuiltinType()) {
+            $parts = explode('\\', $type->getClassName());
+
+            return end($parts);
+        }
+
+        return $type->getBuiltinType();
     }
 }
