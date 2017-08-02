@@ -18,65 +18,38 @@ First, open a command console, enter your project directory and execute the foll
 composer require zquintana/lara-swag dev-master
 ```
 
-Then add the bundle to your kernel:
+Then add the service provider to your app config:
 ```php
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
-        $bundles = [
-            // ...
-
-            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-        ];
-
-        // ...
-    }
-}
+ZQuintana\LaraSwag\Provider\LaraSwagProvider::class
 ```
 
-To browse your documentation with Swagger UI, register the following route:
-
-```yml
-# app/config/routing.yml
-app.swagger_ui:
-    resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
-    prefix:   /api/doc
+To install the vendor assets like configurations and templates run:
+```bash
+$ php artisan vendor:publish --provider="ZQuintana\LaraSwag\Provider\LaraSwagProvider::class"
 ```
 
-If you also want to expose it in JSON, register this route:
+
+To browse your documentation with Swagger UI, register the routes in `config/routing/lara_swag.php`.
+To make this easier after you run the `vendor:publish` command you can add 
+the following to your routes config file: 
 
 ```yml
-# app/config/routing.yml
-app.swagger:
-    path: /api/doc.json
-    methods: GET
-    defaults: { _controller: nelmio_api_doc.controller.swagger }
+<?php
+...
+Route::group(['prefix' => 'api'], function () {
+    require_once('lara_swag.php'); // use routes/lara_swag.php if you're using Laravel pre 5.3
+});
 ```
 
 ## What does this bundle?
 
-It generates you a swagger documentation from your symfony app thanks to
+It generates you a swagger documentation from your Laravel app thanks to
 _Describers_. Each of these _Describers_ extract infos from various sources.
 For instance, one extract data from SwaggerPHP annotations, one from your
 routes, etc.
 
-If you configured the ``app.swagger_ui`` route above, you can browse your
-documentation at `http://example.org/api/doc`.
-
-## Configure the bundle
-
-As you just installed the bundle, you'll likely see routes you don't want in
-your documentation such as `/_profiler/`. To fix this, you can filter the
-routes that are documented by configuring the bundle:
-
-```yml
-# app/config/config.yml
-nelmio_api_doc:
-    routes:
-        path_patterns: # an array of regexps
-            - ^/api
-```
+If you configured the routes above, you can browse your documentation at 
+`http://example.org/api/docs`.
 
 ## Use the bundle
 
@@ -84,30 +57,34 @@ You can configure globally your documentation in the config (take a look at
 [the Swagger specification](http://swagger.io/specification/) to know the fields
 available):
 
-```yml
-nelmio_api_doc:
-    documentation:
-        info:
-            title: My App
-            description: This is an awesome app!
-            version: 1.0.0
+```php
+<?php
+
+return [
+    'documentation' => [
+        'info' => [
+            'title'       => 'My App',
+            'description' => 'This is an awesome app!',
+            'version'     => '1.0.0',            
+        ]    
+    ],
+];
 ```
 
 To document your routes, you can use annotations in your controllers:
 
 ```php
-namespace AppBundle\Controller;
 
-use AppBundle\Entity\User;
-use AppBundle\Entity\Reward;
-use Nelmio\ApiDocBundle\Annotation\Model;
+namespace App\Controllers;
+
+use App\Models\User;
+use App\Models\Reward;
+use ZQuintana\LaraSwag\Annotation\Model;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Routing\Annotation\Route;
 
 class UserController
 {
     /*
-     * @Route("/api/{user}/rewards", methods={"GET"})
      * @SWG\Response(
      *     response=200,
      *     description="Returns the rewards of an user",
@@ -133,26 +110,24 @@ class UserController
 
 ## What's supported?
 
-This bundle supports _Symfony_ route requirements, PHP annotations,
-[_Swagger-Php_](https://github.com/zircote/swagger-php) annotations,
-[_FOSRestBundle_](https://github.com/FriendsOfSymfony/FOSRestBundle) annotations
-and apps using [_Api-Platform_](https://github.com/api-platform/api-platform).
+This package supports _Laravel_ route requirements, PHP annotations,
+[_Swagger-Php_](https://github.com/zircote/swagger-php) annotations.
 
 It supports models through the ``@Model`` annotation.
 
 ## Contributing
 
 See
-[CONTRIBUTING](https://github.com/nelmio/NelmioApiDocBundle/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/zquintana/laravel-webpack/blob/master/CONTRIBUTING.md)
 file.
 
 ## Running the Tests
 
 Install the [Composer](http://getcomposer.org/) dependencies:
 
-    git clone https://github.com/nelmio/NelmioApiDocBundle.git
-    cd NelmioApiDocBundle
-    composer update
+    git clone https://github.com/zquintana/LaraSwag.git
+    cd LaraSwag
+    composer install
 
 Then run the test suite:
 

@@ -5,6 +5,7 @@ namespace ZQuintana\LaraSwag\Provider;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Container\Container;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
@@ -34,9 +35,16 @@ class LaraSwagProvider extends ServiceProvider
     public function boot()
     {
         $this->registerViews();
+
+        if (version_compare(Application::VERSION, '5.3') >= 0) {
+            $routePath = app_path('Http/routes/lara_swag.php');
+        } else {
+            $routePath = base_path('routes/lara_swag.php');
+        }
+
         $this->publishes([
             __DIR__.'/../../config/lara_swag.php' => config_path('lara_swag.php'),
-            __DIR__.'/../../config/routing/lara_swag.php' => app_path('Http/routes/lara_swag.php'),
+            __DIR__.'/../../config/routing/lara_swag.php' => $routePath,
         ], 'config');
     }
 
