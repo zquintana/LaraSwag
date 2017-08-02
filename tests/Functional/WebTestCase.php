@@ -13,25 +13,25 @@ namespace ZQuintana\LaraSwag\Tests\Functional;
 
 use EXSyst\Component\Swagger\Operation;
 use EXSyst\Component\Swagger\Schema;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use EXSyst\Component\Swagger\Swagger;
 
-class WebTestCase extends BaseWebTestCase
+/**
+ * Class WebTestCase
+ */
+class WebTestCase extends TestCase
 {
     /**
-     * {@inheritdoc}
+     * @return Swagger
      */
-    protected static function getKernelClass()
-    {
-        return TestKernel::class;
-    }
-
     protected function getSwaggerDefinition()
     {
-        static::createClient();
-
-        return static::$kernel->getContainer()->get('nelmio_api_doc.generator')->generate();
+        return $this->app->make('lara_swag.generator')->generate();
     }
 
+    /**
+     * @param $name
+     * @return Schema
+     */
     protected function getModel($name): Schema
     {
         $definitions = $this->getSwaggerDefinition()->getDefinitions();

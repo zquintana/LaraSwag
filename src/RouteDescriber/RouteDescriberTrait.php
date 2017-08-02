@@ -35,8 +35,8 @@ trait RouteDescriberTrait
     private function getOperations(Swagger $api, Route $route, \ReflectionMethod $reflectionMethod): array
     {
         $formRequest = $this->getFormRequestParam($reflectionMethod);
-        $path        = $api->getPaths()->get($this->normalizePath($route->getPath()));
-        $methods     = $route->getMethods() ?: Swagger::$METHODS;
+        $path        = $api->getPaths()->get($this->normalizePath($route->uri()));
+        $methods     = $route->methods() ?: Swagger::$METHODS;
         $operations  = [];
 
         if ($formRequest && $model = $this->transformFormRequest($formRequest)) {

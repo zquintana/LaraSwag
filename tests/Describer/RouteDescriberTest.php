@@ -12,22 +12,32 @@
 namespace ZQuintana\LaraSwag\Tests\Describer;
 
 use EXSyst\Component\Swagger\Swagger;
+use Illuminate\Container\Container;
 use ZQuintana\LaraSwag\Describer\RouteDescriber;
 use ZQuintana\LaraSwag\RouteDescriber\RouteDescriberInterface;
 use ZQuintana\LaraSwag\Util\ControllerReflector;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\RouteCollection;
 
+/**
+ * Class RouteDescriberTest
+ */
 class RouteDescriberTest extends AbstractDescriberTest
 {
+    /**
+     * @var RouteCollection
+     */
     private $routes;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     private $routeDescriber;
+
 
     public function testIgnoreWhenNoController()
     {
-        $this->routes->add('foo', new Route('foo'));
+        $this->routes->add(new Route('GET', 'foo', function () {}));
         $this->routeDescriber->expects($this->never())
             ->method('describe');
 
@@ -41,8 +51,7 @@ class RouteDescriberTest extends AbstractDescriberTest
         $this->describer = new RouteDescriber(
             $this->routes,
             new ControllerReflector(
-                new Container(),
-                $this->createMock(ControllerNameParser::class)
+                new Container()
             ),
             [$this->routeDescriber]
         );

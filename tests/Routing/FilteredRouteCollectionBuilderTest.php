@@ -11,10 +11,9 @@
 
 namespace ZQuintana\LaraSwag\Tests\Routing;
 
+use Illuminate\Routing\Route;
 use ZQuintana\LaraSwag\Routing\FilteredRouteCollectionBuilder;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Tests for FilteredRouteCollectionBuilder class.
@@ -28,12 +27,12 @@ class FilteredRouteCollectionBuilderTest extends TestCase
             '^/api/bar',
         ];
 
-        $routes = new RouteCollection();
-        $routes->add('r1', new Route('/api/bar/action1'));
-        $routes->add('r2', new Route('/api/foo/action1'));
-        $routes->add('r3', new Route('/api/foo/action2'));
-        $routes->add('r4', new Route('/api/demo'));
-        $routes->add('r5', new Route('/_profiler/test/test'));
+        $routes = [];
+        $routes['r1'] = new Route('GET', '/api/bar/action1', function () {});
+        $routes['r2'] = new Route('GET', '/api/foo/action1', function () {});
+        $routes['r3'] = new Route('GET', '/api/foo/action2', function () {});
+        $routes['r4'] = new Route('GET', '/api/demo', function () {});
+        $routes['r5'] = new Route('GET', '/_profiler/test/test', function () {});
 
         $routeBuilder = new FilteredRouteCollectionBuilder($pathPattern);
         $filteredRoutes = $routeBuilder->filter($routes);

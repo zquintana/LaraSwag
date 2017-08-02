@@ -22,6 +22,8 @@
         "indigophp/doctrine-annotation-autoload": "^0.1"
     },
     "require-dev": {
+        "illuminate/container": "5.1.x|5.2.x|5.3.x|5.4.x",
+        "illuminate/routing": "5.1.x|5.2.x|5.3.x|5.4.x",
         "symfony/templating": "^2.8|^3.0|^4.0",
         "symfony/twig-bundle": "^3.0|^4.0",
         "symfony/asset": "^2.8|^3.0|^4.0",
@@ -38,7 +40,8 @@
 
         "phpdocumentor/reflection-docblock": "^3.1",
         "api-platform/core": "^2.0.3",
-        "friendsofsymfony/rest-bundle": "^2.0"
+        "friendsofsymfony/rest-bundle": "^2.0",
+        "orchestra/testbench": "^3.4"
     },
     "suggest": {
         "phpdocumentor/reflection-docblock": "For parsing php docs.",

@@ -14,7 +14,7 @@ namespace ZQuintana\LaraSwag\Util;
 use Illuminate\Contracts\Container\Container;
 
 /**
- * @internal
+ * ControllerReflector
  */
 final class ControllerReflector
 {

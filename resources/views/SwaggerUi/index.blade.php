@@ -27,8 +27,6 @@
     <script src="{{ asset('vendor/lara_swag/swagger/lib/marked.js') }}" type='text/javascript'></script>
     <script src="{{ asset('vendor/lara_swag/swagger/lib/swagger-oauth.js') }}" type='text/javascript'></script>
 
-    <script id="swagger-data" type="application/json">{!! json_encode($swagger_data, JSON_UNESCAPED_SLASHES|JSON_HEX_TAG) !!}</script>
-
     <script type="text/javascript">
         var SPEC_URL = "{{ route('lara_swag.doc.spec') }}";
     </script>

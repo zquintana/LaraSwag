@@ -1,4 +1,4 @@
-NelmioApiDocBundle
+Lara Swag
 ==================
 
 [![Build
@@ -7,19 +7,15 @@ Status](https://secure.travis-ci.org/nelmio/NelmioApiDocBundle.png?branch=master
 [![Latest Stable
 Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagist.org/packages/nelmio/api-doc-bundle)
 
-The **NelmioApiDocBundle** bundle allows you to generate a decent documentation
+The **LaraSwag** package allows you to generate a decent documentation
 for your APIs.
-
-## Migrate from 2.x to 3.0
-
-[To migrate from 2.x to 3.0, just follow our guide.](https://github.com/nelmio/NelmioApiDocBundle/blob/master/UPGRADE-3.0.md)
 
 ## Installation
 
 First, open a command console, enter your project directory and execute the following command to download the latest version of this bundle (still in beta, for a stable version look [here](https://github.com/nelmio/NelmioApiDocBundle/tree/2.x)):
 
 ```
-composer require nelmio/api-doc-bundle dev-master
+composer require zquintana/lara-swag dev-master
 ```
 
 Then add the bundle to your kernel:

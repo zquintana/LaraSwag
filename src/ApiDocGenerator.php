@@ -53,12 +53,18 @@ final class ApiDocGenerator
      */
     private $security;
 
+    /**
+     * @var array
+     */
+    private $info;
+
 
     /**
      * @param DescriberInterface[]      $describers
      * @param ModelDescriberInterface[] $modelDescribers
      * @param CacheItemPoolInterface    $cacheItemPool
      * @param array                     $security
+     * @param array                     $info
      * @param string                    $host
      */
     public function __construct(
@@ -66,12 +72,14 @@ final class ApiDocGenerator
         array $modelDescribers,
         CacheItemPoolInterface $cacheItemPool = null,
         array $security = [],
+        array $info = [],
         $host = null
     ) {
         $this->describers = $describers;
         $this->modelDescribers = $modelDescribers;
         $this->cacheItemPool = $cacheItemPool;
         $this->security = $security;
+        $this->info     = $info;
         $this->host     = $host;
     }
 
@@ -91,7 +99,9 @@ final class ApiDocGenerator
             }
         }
 
-        $data = [];
+        $data = [
+            'info' => $this->info,
+        ];
         if (!empty($this->security)) {
             $data['securityDefinitions'] = isset($this->security['definition']) ?
                 $this->security['definition'] : [];

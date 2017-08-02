@@ -101,6 +101,7 @@ class LaraSwagProvider extends ServiceProvider
                 $container->tagged('lara_swag.model_describers'),
                 null,
                 $config->get('lara_swag.security', []),
+                $config->get('lara_swag.documentation.info'),
                 $config->get('lara_swag.routes.host')
             );
         });

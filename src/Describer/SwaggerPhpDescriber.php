@@ -159,8 +159,8 @@ final class SwaggerPhpDescriber extends ExternalDocDescriber implements ModelReg
             $controller = $route->getActionName();
             if ($callable = $this->controllerReflector->getReflectionClassAndMethod($controller)) {
                 list($class, $method) = $callable;
-                $path = $this->normalizePath($route->getPath());
-                $httpMethods = $route->getMethods() ?: Swagger::$METHODS;
+                $path = $this->normalizePath($route->uri());
+                $httpMethods = $route->methods() ?: Swagger::$METHODS;
                 $httpMethods = array_map('strtolower', $httpMethods);
 
                 yield $method => [$path, $httpMethods];
