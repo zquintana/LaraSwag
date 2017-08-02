@@ -1,11 +1,9 @@
 Lara Swag
 ==================
 
-[![Build
-Status](https://secure.travis-ci.org/nelmio/NelmioApiDocBundle.png?branch=master)](http://travis-ci.org/nelmio/NelmioApiDocBundle)
-[![Total Downloads](https://poser.pugx.org/nelmio/api-doc-bundle/downloads)](https://packagist.org/packages/nelmio/api-doc-bundle)
-[![Latest Stable
-Version](https://poser.pugx.org/nelmio/api-doc-bundle/v/stable)](https://packagist.org/packages/nelmio/api-doc-bundle)
+[![Build Status](https://travis-ci.org/zquintana/LaraSwag.svg?branch=master)](https://travis-ci.org/zquintana/LaraSwag)
+[![Total Downloads](https://poser.pugx.org/zquintana/lara-swag/downloads)](https://packagist.org/packages/zquintana/lara-swag)
+[![Latest Stable Version](https://poser.pugx.org/zquintana/lara-swag/v/stable)](https://packagist.org/packages/zquintana/lara-swag)
 
 The **LaraSwag** package allows you to generate a decent documentation
 for your APIs.
