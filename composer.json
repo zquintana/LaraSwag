@@ -2,16 +2,12 @@
     "name": "zquintana/lara-swag",
     "description": "Generates documentation for your REST API from annotations",
     "keywords": ["api", "documentation", "doc", "rest"],
-    "type": "symfony-bundle",
+    "type": "laravel-package",
     "license": "MIT",
     "authors": [
         {
-            "name": "Nelmio",
-            "homepage": "http://nelm.io"
-        },
-        {
-            "name": "Symfony Community",
-            "homepage": "https://github.com/nelmio/NelmioApiDocBundle/contributors"
+            "name": "Zachary Quintana",
+            "homepage": "https://github.com/zquintana/LaraSwag"
         }
     ],
     "require": {
