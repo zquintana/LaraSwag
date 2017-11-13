@@ -122,7 +122,21 @@ trait RouteDescriberTrait
         foreach ($reflectionMethod->getParameters() as $argument) {
             $class = $argument->getClass();
             if ($class && $class->isSubclassOf(FormRequest::class)) {
-                return $class->newInstanceWithoutConstructor();
+                $current = app('request');
+
+                /** @var FormRequest $form */
+                $form = $class->newInstanceWithoutConstructor();
+                $form->initialize(
+                    $current->query->all(),
+                    $current->request->all(),
+                    $current->attributes->all(),
+                    $current->cookies->all(),
+                    [],
+                    $current->server->all(),
+                    null
+                );
+
+                return $form;
             }
         }
 
