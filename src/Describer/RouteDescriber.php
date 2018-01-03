@@ -55,6 +55,10 @@ final class RouteDescriber implements DescriberInterface, ModelRegistryAwareInte
                 continue;
             }
 
+            if (false === strpos($api->getHost(), $route->domain())) {
+                continue;
+            }
+
             // if able to resolve the controller
             $controller = $route->getActionName();
             if ($method = $this->controllerReflector->getReflectionMethod($controller)) {
