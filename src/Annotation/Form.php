@@ -28,17 +28,14 @@ final class Form extends Parameter
 
 
     /**
-     * @param array $parents
-     * @param array $skip
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function validate($parents = [], $skip = [])
+    public function validate($parents = [], $skip = [], $ref = [])
     {
         if (empty($this->name)) {
             $this->name = $this->class;
         }
 
-        return parent::validate($parents, $skip);
+        return parent::validate($parents, $skip, $ref);
     }
 }
