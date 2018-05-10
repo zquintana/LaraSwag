@@ -104,6 +104,17 @@ final class FormModelDescriber implements ModelDescriberInterface, ModelRegistry
 
                     break;
                 }
+                if ('entity' === $blockPrefix) {
+                    $type = $config->getOption('swagger_type') ?? 'integer';
+                    $property->setType($config->getOption('multiple') ? 'array' : $type);
+                    if (null !== ($description = $config->getOption('swagger_description'))) {
+                        $property->setDescription($description);
+                    }
+                    $items = $property->getItems();
+                    $items->setType($type);
+
+                    break;
+                }
                 if ('collection' === $blockPrefix) {
                     $subType = $config->getOption('entry_type');
                 }
