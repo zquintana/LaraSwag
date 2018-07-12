@@ -135,6 +135,7 @@ trait RouteDescriberTrait
                     $current->server->all(),
                     null
                 );
+                $form->setContainer(app());
 
                 return $form;
             }
