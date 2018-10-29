@@ -21,4 +21,9 @@ return [
     'security' => [],
 
     'ui_template' => 'lara_swag::SwaggerUi.index',
+
+    /**
+     * Cache driver for spec caching
+     */
+    'cache' => 'file',
 ];

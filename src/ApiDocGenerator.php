@@ -12,6 +12,7 @@
 namespace ZQuintana\LaraSwag;
 
 use EXSyst\Component\Swagger\Swagger;
+use Illuminate\Contracts\Cache\Repository;
 use ZQuintana\LaraSwag\Describer\DescriberInterface;
 use ZQuintana\LaraSwag\Describer\ModelRegistryAwareInterface;
 use ZQuintana\LaraSwag\Model\ModelRegistry;
@@ -23,6 +24,8 @@ use Psr\Cache\CacheItemPoolInterface;
  */
 final class ApiDocGenerator
 {
+    const CACHE_KEY = 'lara_swag.doc_spec';
+
     /**
      * @var Swagger
      */
@@ -39,9 +42,9 @@ final class ApiDocGenerator
     private $modelDescribers;
 
     /**
-     * @var CacheItemPoolInterface
+     * @var Repository
      */
-    private $cacheItemPool;
+    private $cacheRepository;
 
     /**
      * @var string
@@ -62,7 +65,7 @@ final class ApiDocGenerator
     /**
      * @param DescriberInterface[]      $describers
      * @param ModelDescriberInterface[] $modelDescribers
-     * @param CacheItemPoolInterface    $cacheItemPool
+     * @param Repository                $cacheRepository
      * @param array                     $security
      * @param array                     $info
      * @param string                    $host
@@ -70,17 +73,28 @@ final class ApiDocGenerator
     public function __construct(
         array $describers,
         array $modelDescribers,
-        CacheItemPoolInterface $cacheItemPool = null,
+        Repository $cacheRepository = null,
         array $security = [],
         array $info = [],
         $host = null
     ) {
-        $this->describers = $describers;
+        $this->describers      = $describers;
         $this->modelDescribers = $modelDescribers;
-        $this->cacheItemPool = $cacheItemPool;
-        $this->security = $security;
-        $this->info     = $info;
-        $this->host     = $host;
+        $this->cacheRepository = $cacheRepository;
+        $this->security        = $security;
+        $this->info            = $info;
+        $this->host            = $host;
+    }
+
+    /**
+     * @return array
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function getSpecArray(): array
+    {
+        return $this->cacheRepository->rememberForever(self::CACHE_KEY, function () {
+            return $this->generate()->toArray();
+        });
     }
 
     /**
@@ -90,13 +104,6 @@ final class ApiDocGenerator
     {
         if (null !== $this->swagger) {
             return $this->swagger;
-        }
-
-        if ($this->cacheItemPool) {
-            $item = $this->cacheItemPool->getItem('swagger_doc');
-            if ($item->isHit()) {
-                return $this->swagger = $item->get();
-            }
         }
 
         $data = [
@@ -122,10 +129,6 @@ final class ApiDocGenerator
             $describer->describe($this->swagger);
         }
         $modelRegistry->registerDefinitions();
-
-        if (isset($item)) {
-            $this->cacheItemPool->save($item->set($this->swagger));
-        }
 
         return $this->swagger;
     }

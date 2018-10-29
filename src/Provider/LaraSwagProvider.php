@@ -4,6 +4,7 @@ namespace ZQuintana\LaraSwag\Provider;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Illuminate\Cache\NullStore;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -12,6 +13,7 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use ZQuintana\LaraSwag\ApiDocGenerator;
+use ZQuintana\LaraSwag\Command\CacheSpecCommand;
 use ZQuintana\LaraSwag\Controller\SwaggerUiController;
 use ZQuintana\LaraSwag\Describer\DefaultDescriber;
 use ZQuintana\LaraSwag\Describer\ExternalDocDescriber;
@@ -46,6 +48,10 @@ class LaraSwagProvider extends ServiceProvider
             __DIR__.'/../../config/lara_swag.php' => config_path('lara_swag.php'),
             __DIR__.'/../../config/routing/lara_swag.php' => $routePath,
         ], 'config');
+
+        $this->commands([
+            'lara_swag.cache_command',
+        ]);
     }
 
     /**
@@ -63,6 +69,7 @@ class LaraSwagProvider extends ServiceProvider
             ->registerDescribers()
             ->registerController()
             ->registerGenerator()
+            ->registerCacheCommand()
         ;
     }
 
@@ -107,11 +114,23 @@ class LaraSwagProvider extends ServiceProvider
             return new ApiDocGenerator(
                 $container->tagged('lara_swag.describer'),
                 $container->tagged('lara_swag.model_describers'),
-                null,
+                $container->make('cache')->store($config->get('lara_swag.cache')),
                 $config->get('lara_swag.security', []),
                 $config->get('lara_swag.documentation.info'),
                 $config->get('lara_swag.routes.host')
             );
+        });
+
+        return $this;
+    }
+
+    /**
+     * @return LaraSwagProvider
+     */
+    private function registerCacheCommand(): LaraSwagProvider
+    {
+        $this->app->bind('lara_swag.cache_command', function (Container $container) {
+            return new CacheSpecCommand($container->make('lara_swag.generator'));
         });
 
         return $this;

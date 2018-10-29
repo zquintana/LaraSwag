@@ -40,6 +40,6 @@ final class SwaggerUiController extends Controller
      */
     public function spec()
     {
-        return response()->json($this->apiDocGenerator->generate()->toArray());
+        return response()->json($this->apiDocGenerator->getSpecArray());
     }
 }
